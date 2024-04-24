@@ -1,9 +1,9 @@
-from classes import *
+from classe import *
 import time
 import os
 
 estoque = Estoque()
-pedidos = Pedidos()
+pedidos = Pedidos(estoque)
 vendas = Vendas()
 
 while True:
@@ -37,10 +37,10 @@ while True:
             pedidos.registrar_pedido(produto)
             time.sleep(1.2)
         elif opcao == 4:
-            pedidos.processar_pedido(estoque)
+            pedidos.processar_pedido()
         elif opcao == 5:
             produto = input("Digite o nome do produto vendido: ")
-            vendas.registrar_venda(produto)
+            vendas.registrar_venda(produto, estoque)
             time.sleep(1.2)
         elif opcao == 6:
             vendas.desfazer_venda(estoque)
@@ -51,7 +51,7 @@ while True:
         elif opcao == 9:
             vendas.exibir_vendas()
         elif opcao == 10:
-            print("Obrigado  por usar nosso sistema! Até logo.")
+            print("Obrigado por usar nosso sistema! Até logo.")
             time.sleep(1.2)
             break
         else:

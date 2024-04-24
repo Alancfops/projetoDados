@@ -22,18 +22,20 @@ class Estoque:
         return len(self.itens) == 0
 
 class Pedidos:
-    def __init__(self):
+    def __init__(self, estoque):
         self.pedidos = []
+        self.estoque = estoque
 
     def registrar_pedido(self, produto):
         self.pedidos.append(produto)
+        print("Pedido registrado")
 
-    def processar_pedido(self, estoque):
-        if not estoque.esta_vazio():
+    def processar_pedido(self):
+        if not self.estoque.esta_vazio():
             if self.pedidos:
                 produto = self.pedidos.pop(0)
-                if produto in estoque.itens:
-                    estoque.remover_produto(produto)
+                if produto in self.estoque.itens:
+                    self.estoque.remover_produto(produto)
                     print("Pedido processado:", produto)
                     print("Obrigado pela compra")
                 else:
@@ -53,15 +55,12 @@ class Vendas:
         self.pilha = []
 
     def registrar_venda(self, produto, estoque):
-        if not estoque.esta_vazio():
-            if produto in estoque.itens:
-                self.pilha.append(produto)
-                estoque.remover_produto(produto)
-                print("Venda registrada:", produto)
-            else:
-                print("Produto não encontrado no estoque.")
+        if produto:
+            self.pilha.append(produto)
+            estoque.remover_produto(produto)
+            print("Venda registrada:", produto)
         else:
-            print("Não é possível fazer a venda. Estoque vazio.")
+            print("Não é possível fazer a venda. Produto inválido.")
 
     def desfazer_venda(self, estoque):
         if self.pilha:
