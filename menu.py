@@ -3,8 +3,8 @@ import time
 import os
 
 estoque = Estoque()
-pedidos = Pedidos(estoque)
 vendas = Vendas()
+pedidos = Pedidos(estoque, vendas)#novo, chama a venda como parametro
 
 while True:
     print("=" * 30)

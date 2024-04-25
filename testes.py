@@ -25,9 +25,10 @@ class Estoque:
         return len(self.itens) == 0
 
 class Pedidos:
-    def __init__(self, estoque):
+    def __init__(self, estoque, vendas):
         self.pedidos = []
         self.estoque = estoque
+        self.vendas = vendas
 
     def registrar_pedido(self, produto):
         self.pedidos.append(produto)
@@ -40,7 +41,7 @@ class Pedidos:
                     self.estoque.remover_produto(produto)
                     print("Pedido processado:", produto)
                     print("Obrigado pela compra")
-                    return produto  # Retorna o produto para venda
+                    self.vendas.registrar_venda(produto, self.estoque)  # Passa o produto e o estoque para vendas
                 else:
                     print("Produto não encontrado no estoque.")
             else:
@@ -52,6 +53,8 @@ class Pedidos:
         print("Pedidos:")
         for produto in self.pedidos:
             print(produto)
+
+
 
 class Vendas:
     def __init__(self):
@@ -80,8 +83,8 @@ class Vendas:
 
 # Inicializar as estruturas de dados
 estoque = Estoque()
-pedidos = Pedidos(estoque)
 vendas = Vendas()
+pedidos = Pedidos(estoque, vendas)
 
 while True:
     print("=" * 30)

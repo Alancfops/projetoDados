@@ -10,34 +10,36 @@ class Estoque:
         if produto in self.itens:
             self.itens.remove(produto)
             print("Produto removido:", produto)
-        else:
-            print("Produto não encontrado no estoque.")
+            #deveria ter um else aqui
 
     def exibir_estoque(self):
         print("Estoque:")
         for produto in reversed(self.itens):
             print(produto)
 
-    def esta_vazio(self):
+    def vazio(self):
         return len(self.itens) == 0
 
+
+
 class Pedidos:
-    def __init__(self, estoque):
+    def __init__(self, estoque, vendas): #novo, adicionado o vendas como parametro
         self.pedidos = []
         self.estoque = estoque
+        self.vendas = vendas #novo
 
     def registrar_pedido(self, produto):
         self.pedidos.append(produto)
-        print("Pedido registrado")
 
     def processar_pedido(self):
-        if not self.estoque.esta_vazio():
+        if not self.estoque.vazio():
             if self.pedidos:
                 produto = self.pedidos.pop(0)
                 if produto in self.estoque.itens:
                     self.estoque.remover_produto(produto)
                     print("Pedido processado:", produto)
                     print("Obrigado pela compra")
+                    self.vendas.registrar_venda(produto, self.estoque)  #novo, passa o pedido para vendas
                 else:
                     print("Produto não encontrado no estoque.")
             else:
@@ -50,6 +52,8 @@ class Pedidos:
         for produto in self.pedidos:
             print(produto)
 
+
+
 class Vendas:
     def __init__(self):
         self.pilha = []
@@ -57,7 +61,7 @@ class Vendas:
     def registrar_venda(self, produto, estoque):
         if produto:
             self.pilha.append(produto)
-            estoque.remover_produto(produto)
+            estoque.remover_produto(produto)  #novo, remove do estoque o produto falado
             print("Venda registrada:", produto)
         else:
             print("Não é possível fazer a venda. Produto inválido.")
@@ -65,7 +69,7 @@ class Vendas:
     def desfazer_venda(self, estoque):
         if self.pilha:
             produto = self.pilha.pop()
-            estoque.adicionar_produto(produto)
+            estoque.adicionar_produto(produto)  #novo, adiciona o produto no estoque novamente
             print("Venda desfeita:", produto)
         else:
             print("Não há vendas para desfazer.")
